@@ -1,19 +1,20 @@
 class Solution {
 public:
-    int f(vector<int> &dp,int n){
-        if(n==0) return dp[n]=1;
-        if(n==1) return dp[n]=1;
-        if(n==2) return dp[n]=2;
+    int dp[20];
+    int solve(int n){
+        if(n==0) return 1;
+        if(n==1) return 1;
         if(dp[n]!=-1) return dp[n];
-        int sum=0;
-        for(int k=1;k<=n;k++){
-            // make k as root node step wise
-            sum+=f(dp,k-1)*f(dp,n-k);
+        int ans=0;
+        for(int i=1;i<=n;i++){
+            ans+=solve(i-1)*solve(n-i);
         }
-        return dp[n]=sum;
+        return dp[n]=ans;
     }
     int numTrees(int n) {
-        vector<int> dp(400,-1);
-        return f(dp,n);
+        memset(dp,-1,sizeof(dp));
+       //CATALAN Number question 
+       int ans=solve(n);
+       return ans;
     }
 };
