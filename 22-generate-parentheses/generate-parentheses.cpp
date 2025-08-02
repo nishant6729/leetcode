@@ -1,7 +1,7 @@
 class Solution {
 public:
     void parenthesis(string s,int op,int cp,int n,vector<string> &v){
-       if(cp==n){
+       if(op==n && cp==n){
            v.push_back(s);
            return;
        }
