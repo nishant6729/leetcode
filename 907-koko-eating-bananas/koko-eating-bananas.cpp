@@ -1,9 +1,9 @@
 class Solution {
 public:
-    long long helper(vector<int>& piles,int mid,int limit){
-        long long count=0;
+    int helper(vector<int>& piles,int mid,int limit){
+        int count=0;
         for(auto& i:piles){
-            count+=1LL * i/mid;
+            count+=i/mid;
             if(i%mid!=0) count++;
             if(count>limit) return count;
         }
@@ -15,7 +15,7 @@ public:
         int ans=INT_MAX;
         while(lo<=hi){ // binary search on answer
             int mid=lo+(hi-lo)/2;
-            long long time=helper(piles,mid,h);
+            int time=helper(piles,mid,h);
             if(time>h){
                 lo=mid+1;
             }
