@@ -4,7 +4,7 @@ public:
         int n = arr.length();
         int peakIdx = -1;
 
-        // Step 1: Find peak using binary search
+  
         int lo = 0, hi = n - 1;
         while (lo < hi) {
             int mid = lo + (hi - lo) / 2;
@@ -16,9 +16,8 @@ public:
                 hi = mid;
             }
         }
-        peakIdx = lo; // peak found
-
-        // Step 2: Binary search on ascending part
+        peakIdx = lo; 
+        
         lo = 0, hi = peakIdx;
         while (lo <= hi) {
             int mid = lo + (hi - lo) / 2;
@@ -28,13 +27,13 @@ public:
             else hi = mid - 1;
         }
 
-        // Step 3: Binary search on descending part
+        
         lo = peakIdx + 1, hi = n - 1;
         while (lo <= hi) {
             int mid = lo + (hi - lo) / 2;
             int midVal = arr.get(mid);
             if (midVal == target) return mid;
-            else if (midVal > target) lo = mid + 1; // reversed because it's descending
+            else if (midVal > target) lo = mid + 1; 
             else hi = mid - 1;
         }
 
