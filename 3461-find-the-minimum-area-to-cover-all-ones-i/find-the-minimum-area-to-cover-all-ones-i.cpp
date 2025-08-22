@@ -8,6 +8,7 @@ public:
         int i=0;
         int j=n-1;
         while(i<n && j>=0){
+            if(sidx1!=-1 && eidx1!=-1) break;
             for(int k=0;k<m;k++){
                 if(grid[k][i]==1 && sidx1==-1) sidx1=i;
                 if(grid[k][j]==1 && eidx1==-1) eidx1=j;
@@ -20,6 +21,7 @@ public:
         int sidx2=-1;
         int eidx2=-1;
         while(i<m && j>=0){
+            if(sidx2!=-1 && eidx2!=-1) break;
             for(int k=0;k<n;k++){
                 if(grid[i][k]==1 && sidx2==-1) sidx2=i;
                 if(grid[j][k]==1 && eidx2==-1) eidx2=j;
