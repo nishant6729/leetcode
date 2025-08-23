@@ -12,7 +12,7 @@ public:
        
 
             while(!st.empty() && st.top()<nums[i]){
-                num3=st.top();
+                num3=max(num3,st.top());
                 st.pop();
             }
             st.push(nums[i]);
