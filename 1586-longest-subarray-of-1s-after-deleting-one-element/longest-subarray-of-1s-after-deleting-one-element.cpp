@@ -10,8 +10,9 @@ public:
 
         int prev=0;
         int next=0;
-        priority_queue<int> pq;
+       
         int i=0;
+        int ans=INT_MIN;
         while(i<n){
             while(i<n && nums[i]==1){
                 prev++;
@@ -22,10 +23,10 @@ public:
                 next++;
                 i++;
             }
-            pq.push(next+prev);
+            ans=max(ans,prev+next);
             prev=next;
             next=0;
         }
-        return pq.top();
+        return ans;
     }
 };
