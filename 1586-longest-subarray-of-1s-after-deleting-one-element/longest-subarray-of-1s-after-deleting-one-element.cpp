@@ -2,11 +2,11 @@ class Solution {
 public:
     int longestSubarray(vector<int>& nums) {
         int n=nums.size();
-        unordered_map<int,int> mp;
+        int zcounter=0;
         for(auto i:nums){
-            mp[i]++;
+            if(i==0) zcounter++;
         }
-        if(mp[0]==0 || mp[0]==1) return n-1;
+        if(zcounter==0 || zcounter==1) return n-1;
 
         int prev=0;
         int next=0;
