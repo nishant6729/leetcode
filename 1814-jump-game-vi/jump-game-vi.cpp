@@ -11,16 +11,16 @@ public:
         dp[n-2]=nums[n-2]+nums[n-1];
 
 
-        multiset<pair<int,int>> st;
-        st.insert({nums[n-1],n-1});
-        st.insert({dp[n-2],n-2});
+        priority_queue<pair<int,int>> pq;
+        pq.push({nums[n-1],n-1});
+        pq.push({dp[n-2],n-2});
         for(int i=n-3;i>=0;i--){
-            while (!st.empty() && st.rbegin()->second > i + k) {
-                st.erase(std::prev(st.end()));
+            while (!pq.empty() && pq.top().second > i + k) {
+                pq.pop();
             }
-            int req=(*st.rbegin()).first;
+            int req=pq.top().first;
             dp[i]=nums[i]+req;
-            st.insert({dp[i],i});
+            pq.push({dp[i],i});
         }
         return dp[0];
     }
