@@ -1,18 +1,26 @@
 class Solution {
 public:
     int areaOfMaxDiagonal(vector<vector<int>>& dimensions) {
-        priority_queue<pair<double,int>> pq;
+        int maxArea=INT_MIN;
+        double maxDiagonal=INT_MIN;
         int n=dimensions.size();
-        for(int i=0;i<n;i++){
-            int l=dimensions[i][0];
-            int w=dimensions[i][1];
+        for(auto v:dimensions){
+            int l=v[0];
+            int w=v[1];
+
 
             double diagonal=sqrt(l*l+w*w);
-            int area=w*l;
-
-            pq.push({diagonal,area});
+            
+            int area=l*w;
+            if(diagonal>maxDiagonal){
+                maxDiagonal=diagonal;
+                
+                maxArea=area;
+            }
+            else if(diagonal==maxDiagonal){
+                maxArea=max(area,maxArea);
+            }
         }
-
-        return pq.top().second;
+        return maxArea;
     }
 };
