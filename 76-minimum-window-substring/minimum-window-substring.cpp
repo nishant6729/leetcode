@@ -2,13 +2,13 @@ class Solution {
 public:
     string minWindow(string s, string t) {
         if(t.size()>s.size()) return "";
-        unordered_map<char,int> mp;
+        unordered_map<char,int> mp;   // kitni req hai kon curr window me kitna extra hai sb ka track yha rhega 
 
         for(auto ch:t){
             mp[ch]++;
         }
-        int i=0; // start pos
-        int j=0; // sbke pass jaega check krne ke liye
+        int i=0; // ek baar req fulfill ho gyi fir use chahiye ki best mile or curr size bhi calc ho toh woh shrinking or curr Size ko calc krne ke liye
+        int j=0; // sbke pass jaega check krne ke liye or req fulfill krne ke liye
 
         int minWindowSize=INT_MAX;
         int reqCount=t.size();
