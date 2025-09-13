@@ -4,21 +4,21 @@ public:
         int n=height.size();
         vector<int> leftMax(n);
         vector<int> rightMax(n);
-        leftMax[0]=height[0];
-        rightMax[n-1]=height[n-1];
+        leftMax[0]=0;
         for(int i=1;i<n;i++){
-            leftMax[i]=max(leftMax[i-1],height[i]);
+            leftMax[i]=max(leftMax[i-1],height[i-1]);
         }
+        rightMax[n-1]=0;
         for(int i=n-2;i>=0;i--){
-            rightMax[i]=max(rightMax[i+1],height[i]);
+            rightMax[i]=max(rightMax[i+1],height[i+1]);
         }
-        int count=0;
+        int ans=0;
         for(int i=1;i<n-1;i++){
-            int lmax=leftMax[i];
-            int rmax=rightMax[i];
-            int temp=min(lmax,rmax)-height[i];
-            if(temp>0) count+=temp;
+            int temp=min(rightMax[i],leftMax[i]);
+            if(temp-height[i]>0){
+                ans+=temp-height[i];
+            }
         }
-        return count;
+        return ans;
     }
 };
