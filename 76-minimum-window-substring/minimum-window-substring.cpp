@@ -2,39 +2,39 @@ class Solution {
 public:
     string minWindow(string s, string t) {
         if(t.size()>s.size()) return "";
-        unordered_map<char,int> mp;   // kitni req hai kon curr window me kitna extra hai sb ka track yha rhega 
-
-        for(auto ch:t){
-            mp[ch]++;
-        }
-        int i=0; // ek baar req fulfill ho gyi fir use chahiye ki best mile or curr size bhi calc ho toh woh shrinking or curr Size ko calc krne ke liye
-        int j=0; // sbke pass jaega check krne ke liye or req fulfill krne ke liye
-
-        int minWindowSize=INT_MAX;
-        int reqCount=t.size();
-
-        int startI=0;  // substr finally bnane ke liye
-        while(j<s.size()){
-            char c=s[j];
-            if(mp[c]>0){
-                reqCount--;
-            }   
-            mp[c]--;
-            while(reqCount==0){  // window shrink
-                int currWindowSize=j-i+1;
-
-                if(currWindowSize<minWindowSize){
-                    minWindowSize=currWindowSize;
-                    startI=i;
+       int req=t.size(); 
+       int i=0;
+       int j=0;
+       int n=s.size();
+       int minLen=INT_MAX;
+       int idx=0;
+       unordered_map<char,int> mp;
+       for(auto& c:t){
+            mp[c]++;
+       }
+       while(j<n){
+            
+                mp[s[j]]--;
+                if(mp[s[j]]>=0){
+                    req--;
                 }
-                // shrinking ki baari
+                
+                j++;
 
-                mp[s[i]]++;
-                if(mp[s[i]]>0) reqCount++;
-                i++;
-            }
-            j++;
-        }
-        return minWindowSize==INT_MAX ?"":s.substr(startI,minWindowSize);
+                while (req == 0) {
+                    int currLen = j - i;
+                    if (currLen < minLen) {
+                        minLen = currLen;
+                        idx = i;
+                    }
+                    // try to remove s[i]
+                    mp[s[i]]++;
+                    if (mp[s[i]] > 0) req++; // we lost a required char
+                    i++;
+                }
+
+            
+       }
+        return (minLen == INT_MAX) ? "" : s.substr(idx, minLen);
     }
 };
