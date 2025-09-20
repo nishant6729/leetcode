@@ -1,6 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 class Router {
 public:
     deque<vector<int>> dq;
