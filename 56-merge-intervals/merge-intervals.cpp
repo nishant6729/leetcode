@@ -17,7 +17,7 @@ public:
                 
             }
             if(j-1!=i){
-                int tempEnd=max(intervals[j-1][1],currEnd);
+                int tempEnd=currEnd;
                 int tempStart=intervals[i][0];
                 ans.push_back({tempStart,tempEnd});
             }
