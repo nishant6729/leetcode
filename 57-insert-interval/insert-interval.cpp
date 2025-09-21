@@ -1,54 +1,37 @@
 class Solution {
 public:
-    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
-        int idx=0;
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin(),intervals.end());
+
+        int i=0;
+        int j=1;
+        int n=intervals.size();
         vector<vector<int>> ans;
-        bool flag=false;
-        if(intervals.size()==0){
-            intervals.push_back(newInterval);
-            return intervals;
-        }
-        while(idx<intervals.size()){
-            vector<int> temp=intervals[idx];
-            int start=temp[0];
-            int end=temp[1];
-            if(!flag){
-                int start2=newInterval[0];
-                if(start<start2){
-                    ans.push_back(temp);
-                    idx++;
-                    continue;
-                }
-                else{
-                    if(ans.size()==0) ans.push_back(newInterval);
-                    else if(ans.back()[1]>=start2){
-                        ans.back()[1]=max(ans.back()[1],newInterval[1]);
-                    }
-                    else{
-                        ans.push_back(newInterval);
-                    }
-                    flag=true;
-                    continue;
-                }
+        while(i<n){
+            int currStart=intervals[i][0];
+            int currEnd=intervals[i][1];
+
+            while(j<n && intervals[j][0]<=currEnd){
+                currEnd=max(currEnd,intervals[j][1]);
+                j++;
+                
+            }
+            if(j-1!=i){
+                int tempEnd=currEnd;
+                int tempStart=intervals[i][0];
+                ans.push_back({tempStart,tempEnd});
             }
             else{
-                if(ans.back()[1]>=intervals[idx][0]){
-                    ans.back()[1]=max(ans.back()[1],intervals[idx][1]);
-                }
-                else{
-                    ans.push_back(intervals[idx]);
-                }
+                ans.push_back(intervals[i]);
             }
-            idx++;
+            i=j;
+            j=i+1;
         }
-        if(!flag){
-            if(ans.back()[1]>=newInterval[0]){
-                ans.back()[1]=max(ans.back()[1],newInterval[1]);
-            }
-            else{
-                ans.push_back(newInterval);
-            }
-        }
+        return ans;
+    }
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        intervals.push_back(newInterval);
+        vector<vector<int>> ans=merge(intervals);
         return ans;
     }
 };
