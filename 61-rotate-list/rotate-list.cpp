@@ -10,52 +10,49 @@
  */
 class Solution {
 public:
-    ListNode* reverse(ListNode* head){
-        if(!head) return head;
-        if(head->next==NULL) return head;
+    ListNode* reverse(ListNode* head,ListNode* end){
         ListNode* prev=NULL;
         ListNode* curr=head;
-        ListNode* nxt=curr->next;
-        while(curr){
+        ListNode* nxt;
+        if(curr){
+            nxt=curr->next;
+        }
+        else nxt=NULL;
+        while(curr!=end){
             curr->next=prev;
             prev=curr;
             curr=nxt;
-            if(!curr) break;
-            nxt=nxt->next;
+            if(curr) nxt=nxt->next;
         }
         return prev;
     }
     ListNode* rotateRight(ListNode* head, int k) {
-        if (!head || !head->next || k == 0) return head;
-        int s=0;
-        ListNode* u=head;
-        while(u){
-            s++;
-            u=u->next;
+        if(!head || k==0 || !head->next) return head;
+        ListNode* t=head;
+        int size=0;
+        while(t){
+            t=t->next;
+            size++;
         }
-        k=k%s;
-        if(k==0) return head;
-        ListNode* tail=reverse(head);
-        ListNode* dummy= new ListNode(0);
-        dummy->next=tail;
-        ListNode* temp=dummy;
-        while(k-- && temp){
+        
+        k=k%size;
+        if(k==0 || k==size) return head;
+        head=reverse(head,NULL);
+        ListNode* dummy=new ListNode(0);
+        dummy->next=head;
+        
+        
+        ListNode* end=head;
+        for(int i=0;i<k;i++){
+            if(end) end=end->next;
+        }
+        dummy->next=reverse(head,end);
+        end=reverse(end,NULL);
+        ListNode* temp=head;
+        while(temp->next){
             temp=temp->next;
         }
-        
-
-        ListNode* secondEnd=NULL;
-        if(temp) secondEnd=temp->next;
-        if(temp) temp->next=NULL;
-        
-
-        ListNode* firstStart=reverse(dummy->next);
-        ListNode* secondStart=reverse(secondEnd);
-        ListNode* t=firstStart;
-        while(t && t->next){
-            t=t->next;
-        }
-        if(t) t->next=secondStart;
-        return firstStart;
+        temp->next=end;
+        return dummy->next;
     }
 };
