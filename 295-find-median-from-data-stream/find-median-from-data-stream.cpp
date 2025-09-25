@@ -5,7 +5,7 @@ public:
     MedianFinder() { }
 
     void addNum(int num) {
-        // keep insertion rule same (equal goes to left)
+        // (SAME) decide where to push
         if(left.size()==0 || left.top()>=num){
             left.push(num);
         }
@@ -13,7 +13,8 @@ public:
             right.push(num);
         }
 
-        // CHANGE: rebalance immediately after insertion (minimal fix)
+        // CHANGE: rebalance immediately after insertion
+        // Reason: ensures sizes differ by at most 1 always.
         if(left.size() > right.size() + 1){   // left too big -> move one to right
             right.push(left.top());
             left.pop();
@@ -25,7 +26,8 @@ public:
     }
 
     double findMedian() {
-        // CHANGE: no rebalancing here — just return median
+        // CHANGE: remove any rebalancing here — just return median
+        // Reason: rebalancing must be done at insertion so findMedian is O(1)
         if(left.size()==right.size()){
             return ( (double)left.top() + (double)right.top() ) / 2.0;
         }
