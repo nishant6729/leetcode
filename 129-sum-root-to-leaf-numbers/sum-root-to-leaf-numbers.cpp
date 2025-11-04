@@ -11,21 +11,27 @@
  */
 class Solution {
 public:
-    vector<string> temp;
+    queue<string> qu;
     void dfs(TreeNode* root,string s){
-        if(root->left==NULL && root->right==NULL){
-            temp.push_back(s+to_string(root->val));
-        }
-        string t=to_string(root->val);
-        if(root->left) dfs(root->left,s+t);
-        if(root->right) dfs(root->right,s+t);
+        if(!root) return;
+        if(!root->left && !root->right){
+            qu.push(s+to_string(root->val));
+            return ;
+        } 
+        string temp=s+to_string(root->val);
+         dfs(root->left,temp);
+         dfs(root->right,temp);
     }
     int sumNumbers(TreeNode* root) {
         dfs(root,"");
-        int ans=0;
-        for(auto s:temp){
-            ans+=stoi(s);
+        int sum=0;
+        while(!qu.empty()){
+            if(qu.front()!=""){
+                sum+=stoi(qu.front());
+                qu.pop();
+            }
+            else qu.pop();
         }
-        return ans;
+        return sum;
     }
 };
