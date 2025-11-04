@@ -14,7 +14,8 @@ public:
     TreeNode* makeTree(int sidx,int eidx,int &idx,vector<int>& preorder, vector<int>& inorder){
         if(sidx>eidx) return NULL;
        
-        int target=preorder[idx++];
+        int target=preorder[idx];
+        idx++;
         TreeNode* root=new TreeNode(target);
         int tempIdx;
         for(int i=sidx;i<=eidx;i++){
