@@ -1,29 +1,29 @@
 class Solution {
 public:
     vector<vector<int>> adj;
-    bool dfs(int node,vector<bool>& ans,unordered_set<int>& visited){
-        if(ans[node]==true){
-            return true;
+    int dfs(int node,vector<int>& ans,unordered_set<int>& visited){
+        if(ans[node]==1){
+            return 1;
         }
         if(visited.find(node)!=visited.end()){
-            ans[node]=false;
-            return false;
+            ans[node]=0;
+            return 0;
         }
         visited.insert(node);
         for(auto& neigh:adj[node]){
             if(!dfs(neigh,ans,visited)){
-                return ans[node]=false;
+                return ans[node]=0;
             }
         }
 
-        return ans[node]=true;
+        return ans[node]=1;
 
     }
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         adj=graph;
         int n=graph.size();
 
-        vector<bool> ans(n,false);
+        vector<int> ans(n,-1);
 
         
 
@@ -32,22 +32,22 @@ public:
         for(int i=0;i<n;i++){
             vector<int> nodes=graph[i];
             if(nodes.size()==0){
-                ans[i]=true;
+                ans[i]=1;
             }
         }
 
         for(int i=0;i<n;i++){
 
-            if(!ans[i]){
+            if(ans[i]==-1){
                 unordered_set<int> visited;
-                dfs(i,ans,visited);
+                ans[i]=dfs(i,ans,visited);
             }
             
             
         }
         vector<int> result;
         for(int i=0;i<ans.size();i++){
-            if(ans[i]==true){
+            if(ans[i]==1){
                 result.push_back(i);
             }
         }
