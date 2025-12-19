@@ -35,7 +35,7 @@ public:
                 int thatNode=neigh.first;
                 int thatTime=neigh.second;
 
-                
+                if(thatNode==prevNode) continue;
 
                 long long newTime=currTime+thatTime;
 
