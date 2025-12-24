@@ -51,7 +51,7 @@ public:
         }
         int component=0;
         for(int i=0;i<n;i++){
-            if(ds.findParent(i)==i) component++;
+            if(ds.parent[i]==i) component++;
         }
         return n-component;
     }
