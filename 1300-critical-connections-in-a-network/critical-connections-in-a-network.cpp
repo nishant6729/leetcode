@@ -12,6 +12,8 @@ public:
             if(it==parent) continue;   // parent ke case me na dfs na update of low
 
             if(visited[it]==-1){
+                // DFS ✅️ low ko update ✅️ bridge check ✅️
+
                 // dfs bhi or baad me low bhi update 
 
                 dfs(it,visited,bridges,node,adj,tin,low);  // bache ka dfs
@@ -30,7 +32,11 @@ public:
 
             }
             else{
+                // DFS❌    low update ✅️   bridge check ❌
+
+
                 // agar pehle se hi visited hai na toh dfs na hi woh bridge bn skta hai kyuki ek path se me aaya hu us tk dusra path yeh hai jo visited show kr rha toh woh bridge nhi bn skta nn
+                
 
                 // na dfs na check for bridge only update low
 
