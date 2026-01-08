@@ -18,9 +18,9 @@ public:
 
         int take_j=helper(nums1,nums2,i+1,j);
 
-        int dont_take=helper(nums1,nums2,i+1,j+1);
+        // int dont_take=helper(nums1,nums2,i+1,j+1);
 
-        return dp[i][j]=max({val,take_i_j,take_i,take_j,dont_take});
+        return dp[i][j]=max({val,take_i_j,take_i,take_j});
 
     }
     int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
