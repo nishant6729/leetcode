@@ -1,30 +1,42 @@
 class Solution {
 public:
-    int dp[1001][1001];
-    int helper(string& s1,string&s2,int i,int j){
+    
+    int helper(string &s1,string &s2,int i,int j,vector<vector<int>>& dp){
+         
+
         if(i>=s1.size()){
-            int temp=0;
+            int count=0;
             for(int k=j;k<s2.size();k++){
-                temp+=s2[k];
+                count+=int(s2[k]);
             }
-            return temp;
+            return count;
         }
         if(j>=s2.size()){
-            int temp=0;
+            int count=0;
             for(int k=i;k<s1.size();k++){
-                temp+=s1[k];
+                count+=int(s1[k]);
             }
-            return temp;
+            return count;
         }
-        if(dp[i][j]!=-1) return dp[i][j];
-        if(s1[i]==s2[j]) return helper(s1,s2,i+1,j+1);
-        int op1=s1[i]+helper(s1,s2,i+1,j);
-        int op2=s2[j]+helper(s1,s2,i,j+1);
-        return dp[i][j]=min(op1,op2);
+       if(dp[i][j]!=-1) return dp[i][j];
+
+        if(s1[i]==s2[j]){
+            return dp[i][j]=helper(s1,s2,i+1,j+1,dp);
+        }
+
+        else{
+            int case1=s1[i]+helper(s1,s2,i+1,j,dp);
+            int case2=s2[j]+helper(s1,s2,i,j+1,dp);
+
+            return dp[i][j]=min(case1,case2);
+        }
     }
     int minimumDeleteSum(string s1, string s2) {
-        memset(dp,-1,sizeof(dp));
-        int ans=helper(s1,s2,0,0);
+
+        vector<vector<int>> dp(s1.size(),vector<int>(s2.size(),-1));
+
+        int ans=helper(s1,s2,0,0,dp);
+
         return ans;
     }
 };
