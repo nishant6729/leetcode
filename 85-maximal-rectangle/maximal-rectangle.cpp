@@ -1,55 +1,54 @@
 class Solution {
 public:
-    int findMaxArea(vector<int>& height){
-        int n=height.size();
-        vector<int> nsr(n);
-        vector<int> nsl(n);
-        nsl[0]=-1;
-        nsr[n-1]=n;
-        stack<int> st;
-        st.push(0);
-        for(int i=1;i<n;i++){
-            while(!st.empty() && height[st.top()]>=height[i]) st.pop();
-            if(st.empty()) nsl[i]=-1;
-            else nsl[i]=st.top();
-            st.push(i);
-        }
-        stack<int> gt;
-        gt.push(n-1);
-        for(int i=n-2;i>=0;i--){
-            while(!gt.empty() && height[gt.top()]>=height[i]) gt.pop();
-            if(gt.empty()) nsr[i]=n;
-            else nsr[i]=gt.top();
-            gt.push(i);
-        }
-        int maxArea=0;
-        for(int i=0;i<n;i++){
-            int h=height[i];
-            int width=nsr[i]-nsl[i]-1;
-            maxArea=max(maxArea,h*width);
-        }
-        return maxArea;
-    }
     int maximalRectangle(vector<vector<char>>& matrix) {
-        // key concept sochne wali thi ki kis tarah ise hum maxArea histogram me convert kre 
-        // har row ke liye dekhte jao or cummalative matrix bnao har baar or max store kro
         int m=matrix.size();
         int n=matrix[0].size();
+        vector<vector<pair<int,int>> > dp(m,vector<pair<int,int>>(n,{0,0}));
 
-        vector<int> height(n);
-        for(int i=0;i<n;i++){
-            height[i]=(matrix[0][i]=='1')?1:0;
-        }
-        int maxArea=findMaxArea(height);
-        for(int row=1;row<m;row++){
-            for(int col=0;col<n;col++){
-                if(matrix[row][col]=='0') height[col]=0;
+
+        for(int i=m-1;i>=0;i--){
+            for(int j=n-1;j>=0;j--){
+                if(matrix[i][j]=='0'){
+                    dp[i][j]={0,0};
+                }
                 else{
-                    height[col]+=1;
+                    if(i+1<m){
+                        dp[i][j].second=dp[i+1][j].second+1;
+                    }
+                    else{
+                        dp[i][j].second=1;
+                    }
+
+                    if(j+1<n){
+                        dp[i][j].first=dp[i][j+1].first+1;
+                    }
+                    else{
+                        dp[i][j].first=1;
+                    }
                 }
             }
-            maxArea=max(maxArea,findMaxArea(height));
         }
-        return maxArea;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                cout<<dp[i][j].first<<" "<<dp[i][j].second<<"//";
+            }
+            cout<<endl;
+        }
+        int ans=0;
+
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                int width = dp[i][j].first;
+
+                for(int k=i; k<m && dp[k][j].second > 0; k++){
+                    width = min(width, dp[k][j].first);
+                    int height = k - i + 1;
+                    ans = max(ans, width * height);
+                }
+            }
+        }
+
+        return ans;
+
     }
 };
