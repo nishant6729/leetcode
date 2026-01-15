@@ -1,7 +1,6 @@
 # Write your MySQL query statement below
-# Jab bhi same table ke rows me checkup krna ho toh table ko do table me todo or self join kro 
-Select today.id
-from weather today
-JOIN weather yesterday
-ON today.recordDate=DATE_ADD(yesterday.recordDate,INTERVAL 1 DAY)
-where today.temperature>yesterday.temperature
+Select w1.id 
+from weather w1
+JOIN weather w2
+ON w1.recordDate=DATE_ADD(w2.recordDate,INTERVAL 1 Day)
+where w1.temperature>w2.temperature
