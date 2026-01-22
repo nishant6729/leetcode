@@ -9,39 +9,23 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        set<ListNode*> st;
-        ListNode* ans=NULL;
-        while(headA && headB){
-            if(st.count(headA)){
-                ans=headA;
-                return ans;
+        if(!headA || !headB) return NULL;
+
+        ListNode* temp1=headA;
+        ListNode* temp2=headB;
+
+        while(temp1!=temp2){
+            temp1=temp1->next;
+            temp2=temp2->next;
+
+            if(temp1==temp2){
+                break;
             }
-            st.insert(headA);
-            headA=headA->next;
-            if(st.count(headB)){
-                ans=headB;
-                return ans;
-            }
-            st.insert(headB);
-            headB=headB->next;
-        }  
-        while(headA){
-            if(st.count(headA)){
-                ans=headA;
-                return ans;
-            }
-            st.insert(headA);
-            headA=headA->next;
-        } 
-        while(headB){
-            if(st.count(headB)){
-                ans=headB;
-                return ans;
-            }
-            st.insert(headB);
-            headB=headB->next;
-        } 
-        return ans;
+
+            if(!temp1) temp1=headB;
+            if(!temp2) temp2=headA;
+        }
+
+        return temp1;
     }
-    
 };
