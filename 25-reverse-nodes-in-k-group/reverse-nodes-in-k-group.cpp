@@ -10,55 +10,83 @@
  */
 class Solution {
 public:
-    ListNode* reverse(ListNode* head,ListNode* end){
+    void reverse(ListNode* start,ListNode* end){
         ListNode* prev=NULL;
-        ListNode* curr=head;
-        ListNode* nxt;
-        if(curr){
-            nxt=curr->next;
-        }
-        else nxt=NULL;
+        ListNode* curr=start;
+        ListNode* nxt=curr->next;
+
         while(curr!=end){
             curr->next=prev;
+
             prev=curr;
             curr=nxt;
-            if(curr) nxt=nxt->next;
+
+            if(nxt) nxt=nxt->next;
+
         }
-        return prev;
+        curr->next=prev;
+
+        
+
+         
+    }
+     int calculateSize(ListNode* head){
+        ListNode* temp=head;
+        int s=0;
+        while(temp){
+            temp=temp->next;
+            s++;
+        }
+
+        return s;
     }
     ListNode* reverseKGroup(ListNode* head, int k) {
-        deque<pair<ListNode*,ListNode*>> dq;
-        int size=0;
-        ListNode* temp=head;
-        while(temp){
-            size++;
-            temp=temp->next;
-        }
-        int loop=size/k;
+        int s=calculateSize(head);
+
         ListNode* start=head;
-        ListNode* end=start;
-        for(int i=0;i<loop;i++){
-            for(int j=0;j<k;j++){
-                if(end) end=end->next;
+
+        ListNode* end=head;
+
+        ListNode* prevStart=new ListNode(-1);
+
+        ListNode* dummy=NULL;  
+
+        int count=s/k;
+
+        int pairLiye=k*count;
+
+        ListNode* finalEnd=head;
+
+        for(int i=0;i<pairLiye;i++){
+            finalEnd=finalEnd->next;
+        }
+
+        while(count--){
+
+            for(int i=0;i<k-1;i++){
+                end=end->next;
             }
-            ListNode* first=reverse(start,end);
-            ListNode* second=start;
-            dq.push_back({first,second});
-            start=end;
-        }
-        if(start){
-            dq.push_back({start,NULL});
-        }
-        dq.push_back({NULL,NULL});
-        ListNode* dummy=new ListNode(0);
 
-        dummy->next=dq[0].first;
-        for(int i=0;i<dq.size()-1;i++){
-            if(dq[i].second) dq[i].second->next=dq[i+1].first;
-            
+            if(!dummy){
+                dummy=end;
+            }
+            ListNode* temp=end->next;
 
+            reverse(start,end);
+
+            prevStart->next=end;
+            prevStart=start;
+
+            start=temp;
+            end=temp;
 
         }
-        return dummy->next;
+
+        
+
+        prevStart->next=finalEnd;
+
+        return dummy;
+        
     }
 };
