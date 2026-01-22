@@ -11,52 +11,62 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        int carry=0;
-        int sum=0;
+        ListNode* temp1=l1;
+        ListNode* temp2=l2;
 
-        ListNode* ptr1=l1;
-        ListNode* ptr2=l2;
-        ListNode* dummy=new ListNode(0);
-        ListNode* head=dummy;
-        while(ptr1 && ptr2){
-            sum=(ptr1->val)+(ptr2->val);
-            int t=sum;
-            sum=sum%10;
-            ListNode* temp=new ListNode((sum+carry)%10);
-            carry=(t+carry)/10;
-            dummy->next=temp;
-            dummy=temp;
-            ptr1=ptr1->next;
-            ptr2=ptr2->next;
+        int carry=0;
+        ListNode* dummy=l1;
+        ListNode* prev=dummy;
+        while(temp1 && temp2){
+
+            int sum=temp1->val+temp2->val+carry;
+
+            ListNode* newNode=new ListNode(sum%10);
+
+            carry=sum/10;
+
+            temp1=temp1->next;
+            temp2=temp2->next;
+    
+            prev->next=newNode;
+            prev=newNode;
         }
-        while(ptr1){
-            sum=(ptr1->val)+(0);
-            int t=sum;
-            sum=sum%10;
-            ListNode* temp=new ListNode((sum+carry)%10);
-            carry=(sum+carry)/10;
-            dummy->next=temp;
-            dummy=temp;
-            ptr1=ptr1->next;
-            
+
+        while(temp1){
+            int sum=temp1->val+carry;
+
+            ListNode* newNode=new ListNode(sum%10);
+
+            carry=sum/10;
+
+            temp1=temp1->next;
+        
+            prev->next=newNode;
+            prev=newNode;
         }
-        while(ptr2){
-            sum=(0)+(ptr2->val);
-            int t=sum;
-            sum=sum%10;
-            ListNode* temp=new ListNode((sum+carry)%10);
-            carry=(sum+carry)/10;
-            dummy->next=temp;
-            dummy=temp;
-            
-            ptr2=ptr2->next;
-            
+
+        while(temp2){
+            int sum=temp2->val+carry;
+
+            ListNode* newNode=new ListNode(sum%10);
+
+            carry=sum/10;
+
+            temp2=temp2->next;
+        
+            prev->next=newNode;
+            prev=newNode;
         }
-        while(carry!=0){
-            ListNode* temp=new ListNode(carry%10);
-            carry=carry/10;
-            dummy->next=temp;
+
+        
+        if(carry!=0){
+            ListNode* newNode=new ListNode(carry);
+
+            prev->next=newNode;
+            prev=newNode;
         }
-        return head->next;
+
+        prev->next=NULL;
+        return dummy->next;
     }
 };
