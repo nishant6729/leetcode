@@ -1,28 +1,27 @@
 class Solution {
 public:
-    vector<vector<int>> ans;
-
-    void helper(vector<int>& nums,int idx,vector<int>& curr){
-
-        if(idx==nums.size()){
-            ans.push_back(curr);
-            return;
-        }
-        ans.push_back(curr);
-
-        for(int i=idx;i<nums.size();i++){
-            curr.push_back(nums[i]);
-
-            helper(nums,i+1,curr);
-
-            curr.pop_back();
-        }
-    }
     vector<vector<int>> subsets(vector<int>& nums) {
-        vector<int> curr;
-        helper(nums,0,curr);
+        
+        // no of subsets 2^n
 
+        // Logic Tabul ki tarah socho
+        int n=nums.size();
 
+        int total=1<<n;
+
+        vector<vector<int>> ans;
+        for(int sub=0;sub<total;sub++){
+            vector<int> temp;
+            for(int i=0;i<n;i++){
+
+                if(sub &(1<<i)){
+                    temp.push_back(nums[i]);
+                }
+            }
+
+            ans.push_back(temp);
+        }
+        
         return ans;
     }
 };
