@@ -8,15 +8,15 @@ public:
     
     void push(int val) {
         st.push(val);
-        if(helper.size()==0 || val<helper.top()){
+        if(helper.empty() || val<helper.top()){
             helper.push(val);
         }
         else helper.push(helper.top());
     }
     
     void pop() {
-        helper.pop();
         st.pop();
+        helper.pop();
     }
     
     int top() {
