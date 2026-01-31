@@ -1,97 +1,71 @@
-#include <unordered_map>
-using namespace std;
-
 class LRUCache {
 public:
-    struct ListNode {
-        int val;              // stores the key (same as your version)
-        ListNode *next;
-        ListNode() : val(0), next(nullptr) {}
-        ListNode(int x) : val(x), next(nullptr) {}
-        ListNode(int x, ListNode *next) : val(x), next(next) {}
-    };
+    list<int> dll;
 
-    // minimal change: map now stores {value, prevPointer}
-    unordered_map<int, pair<int, ListNode*>> mp;
-    int n;
-    ListNode* dummy = new ListNode(0);
-    ListNode* curr = dummy;
-    int currSize = 0;
+    unordered_map<int,pair<int,list<int>::iterator>> mp;
 
+    int k;
     LRUCache(int capacity) {
-        n = capacity;
+        k=capacity;
     }
-
+    
     int get(int key) {
-        auto it = mp.find(key);
-        if (it == mp.end()) return -1;
+        if(!mp.count(key)) return -1;
 
-        int value = it->second.first;
-        ListNode* prev = it->second.second;
-        ListNode* node = prev->next;
+        int ans=mp[key].first;
 
-        // move node to tail if not already tail
-        if (node != curr) {
-            // unlink node
-            prev->next = node->next;
-            if (node->next) {
-                // update prev pointer for the node that followed 'node'
-                mp[node->next->val].second = prev;
-            }
-            // append node to tail
-            curr->next = node;
-            mp[node->val].second = curr; // new prev of moved node
-            node->next = nullptr;
-            curr = node;
-        }
-        return value;
+        auto it=mp[key].second;
+
+        dll.erase(it);
+
+        dll.push_back(key);
+
+        mp[key].second=prev(dll.end());
+
+        return ans;
     }
-
+    
     void put(int key, int value) {
-        auto it = mp.find(key);
-        if (it != mp.end()) {
-            // update value and move to tail
-            it->second.first = value;
-            ListNode* prev = it->second.second;
-            ListNode* node = prev->next;
-            if (node != curr) {
-                prev->next = node->next;
-                if (node->next) mp[node->next->val].second = prev;
+        if(mp.count(key)){
+            mp[key].first=value;
 
-                curr->next = node;
-                mp[node->val].second = curr;
-                node->next = nullptr;
-                curr = node;
-            }
-            return;
-        }
+            dll.erase(mp[key].second);
+            
+            dll.push_back(key);
 
-        // insert new key
-        if (currSize < n) {
-            ListNode* temp = new ListNode(key);
-            curr->next = temp;
-            mp[key] = {value, curr};
-            curr = temp;
-            currSize++;
-        } else {
-            // evict LRU (head = dummy->next)
-            ListNode* lru = dummy->next;
-            if (lru) {
-                mp.erase(lru->val);
-                dummy->next = lru->next;
-                if (dummy->next) {
-                    mp[dummy->next->val].second = dummy;
-                }
-                if (lru == curr) { // if it was the only node
-                    curr = dummy;
-                }
-                delete lru;
-            }
-            // insert new node at tail
-            ListNode* temp = new ListNode(key);
-            curr->next = temp;
-            mp[key] = {value, curr};
-            curr = temp;
+            mp[key].second=--dll.end();
+     
         }
+        else{
+            if(mp.size()<k){
+                dll.push_back(key);
+
+                mp[key].first=value;
+                mp[key].second=--dll.end();
+
+
+            }
+            else{
+
+                int thatKey=*dll.begin();
+                dll.erase(dll.begin());
+
+                mp.erase(thatKey);
+
+                mp[key].first=value;
+
+                dll.push_back(key);
+
+                mp[key].second=--dll.end();
+            }
+        }
+        
     }
 };
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
