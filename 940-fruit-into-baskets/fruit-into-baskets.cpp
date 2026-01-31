@@ -1,36 +1,59 @@
 class Solution {
 public:
     int totalFruit(vector<int>& fruits) {
+        int n1=-1;
+        int n2=-1;
+
+        int eidx1=-1;
+        int eidx2=-1;
+
         int n=fruits.size();
+
         int i=0;
-        int j=1;
-        int fn=fruits[0];
-        int fi=0;
-        int sn=-1;
-        int si=-1;
-        int count=1;
-        while(j<n){
-            if(fruits[j]==fn){
-                fi=j;
+
+        int ans=0;
+        for(int j=0;j<n;j++){
+            if(n1==-1 && n2==-1){
+                n1=fruits[j];
+                eidx1=j;
             }
             else{
-                if(sn==-1 || fruits[j]==sn){
-                    sn=fruits[j];
-                    si=j;
+                if(fruits[j]==n1 || fruits[j]==n2){
+                    if(fruits[j]==n1){
+                        eidx1=j;
+                    }
+                    else{
+                        eidx2=j;
+                    }
+                }
+                else if(n1==-1 || n2==-1){
+                    if(n1==-1){
+                        n1=fruits[j];
+                        eidx1=j;
+                    }
+                    else{
+                        n2=fruits[j];
+                        eidx2=j;
+                    }
                 }
                 else{
-                    count=max(count,j-i);
-                    i=min(fi,si)+1;
-                    if(i<n) fn=fruits[i];
-                    fi=i;
-                    si=-1;
-                    sn=-1;
-                    j=i;
+                    ans=max(ans,j-i);
+
+                    i=min(eidx1,eidx2)+1;
+
+                    if(eidx1<eidx2){
+                        n1=fruits[j];
+                        eidx1=j;
+                    }   
+                    else{
+                        n2=fruits[j];
+                        eidx2=j;
+                    }
                 }
+
             }
-            j++;
         }
-        count=max(count,j-i);
-        return count;
+        ans=max(ans,n-i);
+        return ans;
     }
-};  
+};
