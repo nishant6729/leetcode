@@ -28,6 +28,8 @@ public:
             while ((right - left + 1) - maxCount > k) {
                 freq[s[left] - 'A']--;
                 left++;
+
+                maxCount=*max_element(freq.begin(),freq.end());
             }
 
             // Update the maximum window length
