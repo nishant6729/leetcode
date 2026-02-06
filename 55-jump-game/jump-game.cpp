@@ -1,22 +1,17 @@
 class Solution {
 public:
-    int dp[10001];
-    bool helper(vector<int>& nums,int idx){
-        if(idx>=nums.size()-1) return dp[idx]=true;
-        if(nums[idx]==0) return dp[idx]=false;
+    bool canJump(vector<int>& nums) {
+        // consider max Jump only and see ki me wha tk pahuch skta ya nhi agr aage tk pahuch skta then is tk bhi pahuch skta 
 
 
-        if(dp[idx]!=-1) return dp[idx];
-        bool ans=false;
-        for(int jump=1;jump<=nums[idx];jump++){
-            if(helper(nums,idx+jump)) return dp[idx]=true;
+        int maxIdx=0;
+
+        for(int i=0;i<nums.size();i++){
+            if(i>maxIdx) return false;   // yha tk toh aa hi skta 
+
+            maxIdx=max(maxIdx,i+nums[i]); // kitna max jaa skta hu pura max stretch hai isme 
         }
 
-        return dp[idx]=false;
-    }   
-    bool canJump(vector<int>& nums) {
-        
-        memset(dp,-1,sizeof(dp));
-        return helper(nums,0);
+        return true;
     }
 };
