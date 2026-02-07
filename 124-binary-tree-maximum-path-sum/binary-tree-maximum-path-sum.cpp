@@ -11,17 +11,24 @@
  */
 class Solution {
 public:
-    int maxSum=INT_MIN;
+    int ans;
     int helper(TreeNode* root){
         if(!root) return 0;
-        int left=max(0,helper(root->left));  // avoid kro negative sum kyuki agar kch nhi liya toh waise bhi 0 sum hai hi humare pass kisi side ke path ka
-        int right=max(0,helper(root->right));
 
-        maxSum=max(maxSum,root->val+left+right);
-        return root->val+max(left,right);  // agar maine curr node ko path me liya toh maxSum kitna hoga
+        int leftHalf=max(0,helper(root->left));
+
+        int rightHalf=max(0,helper(root->right));
+
+        ans=max(ans,root->val+(leftHalf+rightHalf));
+
+        return root->val+max(leftHalf,rightHalf);
+
     }
     int maxPathSum(TreeNode* root) {
+        ans=INT_MIN;
+
         helper(root);
-        return maxSum;
+
+        return ans;
     }
 };
