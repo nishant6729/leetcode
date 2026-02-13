@@ -1,55 +1,49 @@
 class Solution {
 public:
-    vector<vector<int>> dir={{1,0},{-1,0},{0,1},{0,-1}};
+    vector<vector<int>> dir={{-1,0},{1,0},{0,1},{0,-1}};
+    typedef pair<int,pair<int,int>> P;
     int minimumEffortPath(vector<vector<int>>& heights) {
-        //direct implementation of Djisktra's Algorithm
+        int m=heights.size();
 
-        int row=heights.size();
+        int n=heights[0].size();
 
-        int col=heights[0].size();
+        if(m==1 && n==1) return 0;
+        vector<vector<int>> maxEffort(m,vector<int>(n,INT_MAX));
 
-        vector<vector<int>> effort(row,vector<int>(col,INT_MAX));
-
-        effort[0][0]=0;
+        priority_queue<P,vector<P>,greater<P>> pq;
 
 
-        set<pair<int,pair<int,int>>> st;
+        pq.push({0,{0,0}});
 
-        st.insert({0,{0,0}});
+        while(!pq.empty()){
 
-        while(!st.empty()){
-            auto it= *(st.begin());
+            auto it=pq.top();
 
-            st.erase(it);
+            pq.pop();
 
-            int h=it.first;
+            int currEffort=it.first;
 
             int i=it.second.first;
+
             int j=it.second.second;
 
             for(auto& d:dir){
                 int newI=i+d[0];
                 int newJ=j+d[1];
-                
-                if(newI>=0 && newI<row && newJ>=0 && newJ<col){
-                    int newEffort = max(h,abs(heights[newI][newJ] - heights[i][j]));
 
+                if(newI>=0 && newI<m && newJ>=0 && newJ<n){
 
-                    if(newEffort<effort[newI][newJ]){
-
-                        if(effort[newI][newJ]!=INT_MAX){
-                            st.erase({effort[newI][newJ],{newI,newJ}});
-                        }
-                        effort[newI][newJ]=newEffort;
-
-                        st.insert({newEffort,{newI,newJ}});
+                    int newEffort=max(abs(heights[newI][newJ]-heights[i][j]),currEffort);
+                    if(newEffort<maxEffort[newI][newJ]){
+                        maxEffort[newI][newJ]=newEffort;
+                        pq.push({newEffort,{newI,newJ}});
                     }
                 }
             }
         }
 
-        if(effort[row-1][col-1]==INT_MAX) return -1;
+        
+        return maxEffort[m-1][n-1];
 
-        return effort[row-1][col-1];
     }
 };
