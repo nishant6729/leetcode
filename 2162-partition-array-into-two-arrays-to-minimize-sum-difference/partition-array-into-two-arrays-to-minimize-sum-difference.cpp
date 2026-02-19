@@ -44,7 +44,8 @@ public:
 
         // left ko pkd ke right me best bnda dhundna hai isliye right ko sort size wise for binary search
 
-        for(int sz=0;sz<=n;sz++){
+        for(int sz=0;sz<=n;sz++){  // left se kitne bnde lena hai uske alg alg options
+        
             sort(right[sz].begin(),right[sz].end());  // hr size pe aane wale diff sum ko sort kr lo 
         } 
 
