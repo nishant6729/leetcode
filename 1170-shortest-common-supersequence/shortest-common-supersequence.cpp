@@ -1,51 +1,67 @@
 class Solution {
 public:
     string shortestCommonSupersequence(string s1, string s2) {
+        // DP bhrna is necessary to know ki kis direction me string create krna hai 
+
         int m=s1.size();
+
         int n=s2.size();
+
+
         vector<vector<int>> dp(m+1,vector<int>(n+1,0));
+
         for(int i=0;i<=m;i++){
-            for(int j=0;j<=n;j++){
-                if(i==0 || j==0){
-                    dp[i][j]=i+j;
-                }
+            for(int j=0;j<=n;j++){  // 1 based indexing consider krke bhrna start DP ko
+
+                if(i==0 || j==0) dp[i][j]=i+j; // agr koi ek empty then dusre ki size is req
+
                 else if(s1[i-1]==s2[j-1]){
-                    dp[i][j]=1+dp[i-1][j-1];
+                    dp[i][j]=1+dp[i-1][j-1];  // is bnde ko liya ab bakiyo ka dekh lo
                 }
+
                 else{
-                    dp[i][j]=1+ min(dp[i-1][j],dp[i][j-1]);
+                    dp[i][j]=1+min(dp[i-1][j],dp[i][j-1]);   // dono me se ek bnda lo jiske lene pe baaki ka creation min me ho
                 }
+                 
             }
         }
-        string scs = "";
-        int i = m,  j = n;
-        while(i > 0 && j > 0) {
-            if(s1[i-1] == s2[j-1]) {
-                scs.push_back(s1[i-1]);
+       
+        // SIMPLE RULE : DP bnana upr se niche DP se use krke string bnana niche se upr
+
+        string ans="";
+
+        int i=m;
+        int j=n;
+
+        while(i>0 && j>0){
+            if(s1[i-1]==s2[j-1]){
+                ans+=s1[i-1];
+
                 i--;
                 j--;
-            } else {
-                if(dp[i-1][j] < dp[i][j-1]) {
-                    scs.push_back(s1[i-1]);
+            }
+            else{
+                if(dp[i-1][j]<dp[i][j-1]){  // ith bnde ko lena is beneficial
+                    ans+=s1[i-1];
                     i--;
-                } else {
-                    scs.push_back(s2[j-1]);
+                }
+                else{
+                    ans+=s2[j-1];  // jth bnde ko lena is beneficial
                     j--;
                 }
             }
         }
-
-        //add remaining characters from both s1 and s2
-        while(i > 0) {
-            scs.push_back(s1[i-1]);
+        
+        while(i>0){
+            ans+=s1[i-1];
             i--;
         }
-        while(j > 0) {
-            scs.push_back(s2[j-1]);
+        while(j>0){
+            ans+=s2[j-1];
             j--;
         }
-        reverse(scs.begin(), scs.end());
-        
-        return scs;
+        reverse(ans.begin(),ans.end());
+        return ans;
+
     }
 };
