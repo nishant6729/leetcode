@@ -1,44 +1,60 @@
 class Solution {
 public:
-    int m, n;
-    vector<vector<vector<int>>> dp;
+    int m,n;
+    
+    int helper(int i,int j,vector<vector<int>>& grid, int k,vector<vector<vector<int>>>& dp){
+        if(i>=m || j>=n) return INT_MIN;
+        int cost;
 
-    int helper(int i, int j, vector<vector<int>>& grid, int k) {
-        if (i >= m || j >= n) return INT_MIN;
+        int score=grid[i][j];
+        
+        if(grid[i][j]==0){
+            cost=0;
+        }
+        else{
+            cost=1;
 
-        int cost = (grid[i][j] != 0);
-        int score = grid[i][j];
-
-        if (cost > k) return INT_MIN;
-
-        if (i == m - 1 && j == n - 1) {
-            return score;
+        }
+        
+        if(cost>k){
+            return INT_MIN;
         }
 
-        if (dp[i][j][k] != -1) return dp[i][j][k];
+        if(i==m-1 && j==n-1){
+            return grid[i][j];
+        }
 
-        int down = helper(i + 1, j, grid, k - cost);
-        int right = helper(i, j + 1, grid, k - cost);
+        if(dp[i][j][k]!=-1) return dp[i][j][k];
 
-        int res = INT_MIN;
+        int case1=helper(i+1,j,grid,k-cost,dp);
 
-        if (down != INT_MIN) res = max(res, down + score);
-        if (right != INT_MIN) res = max(res, right + score);
+        int case2=helper(i,j+1,grid,k-cost,dp);
 
-        return dp[i][j][k] = res;
+
+        if(case1!=INT_MIN){
+            case1+=grid[i][j];
+        }
+        if(case2!=INT_MIN){
+            case2+=grid[i][j];
+        }
+
+        return dp[i][j][k]=max(case1,case2);
     }
-
     int maxPathScore(vector<vector<int>>& grid, int k) {
-        m = grid.size();
-        n = grid[0].size();
 
-        // 🔥 cap k (important)
-        k = min(k, m + n);
+        m=grid.size();
+        n=grid[0].size();
 
-        dp.assign(m, vector<vector<int>>(n, vector<int>(k + 1, -1)));
+        k=min(k,m+n);
 
-        int ans = helper(0, 0, grid, k);
 
-        return (ans == INT_MIN) ? -1 : ans;
+        vector<vector<vector<int>>> dp(m+1,vector<vector<int>>(n+1,vector<int>(k+1,-1)));
+       
+
+        int ans=helper(0,0,grid,k,dp);
+
+        if(ans==INT_MIN) return -1;
+
+        return ans;
     }
 };
